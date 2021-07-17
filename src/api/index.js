@@ -15,3 +15,4 @@ const getQuery = async (url) => {
 
 
 export const getProducts = async (url) => getQuery(url);
+export const getReviewsByProductId = async (url) => getQuery(url);

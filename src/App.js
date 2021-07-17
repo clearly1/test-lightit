@@ -4,7 +4,10 @@ import Header from "./components/Header/Header";
 import {Switch, Route, HashRouter} from 'react-router-dom';
 import LoadingElem from "./components/LoadingElem/LoadingElem";
 
-const ProductsContainer = lazy(() => import( './components/ProductsContainer/ProductsContainer' ));
+const CatalogProductsPage = lazy(() => import( './pages/CatalogProductsPage/CatalogProductsPage' ));
+/*
+const SingleProductPage = lazy(() => import( './pages/SingleProductPage/SingleProductPage' ));
+*/
 
 function App() {
     return (
@@ -14,7 +17,8 @@ function App() {
                 <div className="mainContainer">
                     <Suspense fallback={<LoadingElem/>}>
                         <Switch>
-                            <Route exact path="/" component={ProductsContainer}/>
+                            <Route exact path="/" component={CatalogProductsPage}/>
+                            {/*<Route exact path="/product/:id" component={SingleProductPage}/>*/}
                         </Switch>
                     </Suspense>
                 </div>
