@@ -30,9 +30,9 @@ function Product(props) {
                     margin: '20px'
                 },
                 imageWrapper: {
-                    minWidth: '200px',
-                    width: '200px',
-                    paddingBottom: '200px',
+                    minWidth: '250px',
+                    width: '250px',
+                    paddingBottom: '250px',
                 }
             })
         } else {
