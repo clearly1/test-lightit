@@ -8,12 +8,25 @@ import {
     selectSignInUpForm
 } from "../../features/signInUpForm/signInUpFormSlice";
 import {authentication} from "../../api";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 function SignInUpForm(props) {
 
     const signInUpForm = useSelector(selectSignInUpForm);
     const dispatch = useDispatch();
+    const notify = (response) => {
+        if(response.token){
+            toast.success('Вход выполнен успешно',{
+                position: toast.POSITION.BOTTOM_RIGHT
+            })
+        }else{
+            toast.warn(response.message, {
+                position: toast.POSITION.BOTTOM_RIGHT
+            });
+        }
+    };
 
     return (
         <div className={styles.backgroundApp}>
@@ -45,25 +58,20 @@ function SignInUpForm(props) {
                     }
                     return errors;
                 }}
-                onSubmit={(values, {setSubmitting}) => {
+                onSubmit={(values, {setSubmitting} ) => {
                     setSubmitting(true);
                     let url = 'api/login/';
                     if (!signInUpForm.isSignIn) {
-                        url = '/api/register/'
+                        url = '/api/register/';
                     }
                     authentication(url, values).then(response => {
-
+                        notify(response.data);
                         if(response.data.success === true){
-                            console.log(response.data.token);
-
-                        }else{
-                            console.log(response.data.message);
+                            dispatch(changeSignInUpFormIsOpen())
 
                         }
-
                         setSubmitting(false);
                     })
-
                 }}
             >
                 {({isSubmitting}) => (
@@ -81,7 +89,7 @@ function SignInUpForm(props) {
                                    }}/>
                             <label htmlFor="signUp">Регистрация</label>
                         </div>
-                        <Field type="text" name="username" placeholder="Имя пользователя"/>
+                        <Field type="text" name="username" placeholder="Имя пользователя" />
                         <ErrorMessage name="username">{msg => <div
                             className={styles.errorContainer}>{msg}</div>}</ErrorMessage>
                         <Field type="password" name="password" placeholder="Пароль"/>

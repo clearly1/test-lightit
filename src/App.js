@@ -3,6 +3,7 @@ import React, {lazy, Suspense} from "react";
 import Header from "./components/Header/Header";
 import {Switch, Route, HashRouter} from 'react-router-dom';
 import LoadingElem from "./components/LoadingElem/LoadingElem";
+import {ToastContainer} from "react-toastify";
 
 const CatalogProductsPage = lazy(() => import( './pages/CatalogProductsPage/CatalogProductsPage' ));
 /*
@@ -14,6 +15,7 @@ function App() {
         <div className="App">
             <HashRouter>
                 <Header/>
+                <ToastContainer />
                 <div className="mainContainer">
                     <Suspense fallback={<LoadingElem/>}>
                         <Switch>
