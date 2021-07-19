@@ -19,10 +19,11 @@ function ReviewsContainer(props) {
     return (
         <div className={styles.reviewsContainer}>
             <span>Отзывы:</span>
+
             {
                 loading ? <LoadingElem/>
                 : reviews.length !== 0 ?
-                    reviews.map(review => (
+                    reviews.slice(0).reverse().map(review => (
                         <Review key={review.id} review={review}/>
                     ))
                     :

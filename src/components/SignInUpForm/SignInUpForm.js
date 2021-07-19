@@ -10,6 +10,8 @@ import {
 import {authentication} from "../../api";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import {axiosInstance} from '../../api/index'
+import {setUsername} from "../../features/auth/authSlice";
 
 
 function SignInUpForm(props) {
@@ -67,8 +69,11 @@ function SignInUpForm(props) {
                     authentication(url, values).then(response => {
                         notify(response.data);
                         if(response.data.success === true){
-                            dispatch(changeSignInUpFormIsOpen())
-
+                            dispatch(setUsername(values.username));
+                            document.cookie = `token=${response.data.token}`;
+                            document.cookie = `username=${values.username}`;
+                            axiosInstance.defaults.headers.common['Authorization'] = 'Token'+ response.data.token;
+                            dispatch(changeSignInUpFormIsOpen());
                         }
                         setSubmitting(false);
                     })

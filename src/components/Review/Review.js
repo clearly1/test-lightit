@@ -7,15 +7,14 @@ import moment from "moment";
 function Review(props) {
 
     const [dateReview] = useState(()=>{
-
-        return  moment(props.review.created_at).utc().format('DD/MM/YYYY hh:mm')
+        return  moment(props.review.created_at).utc().format('DD/MM/YYYY HH:mm')
     });
 
     return (
         <div className={styles.reviewContainer}>
             <div className={styles.flexRow}>
                 <span className={styles.userName}>{props.review.created_by.username}</span>
-                <Rating className={styles.ratingClass} name='read-only' value={props.review.rate} readOnly  size="small"/>
+                <Rating name='read-only' value={props.review.rate} readOnly  size="small"/>
             </div>
             <p className={styles.reviewText}>{props.review.text}</p>
             <span className={styles.dateItem}>{dateReview}</span>
