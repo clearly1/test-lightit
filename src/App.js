@@ -4,8 +4,9 @@ import Header from "./components/Header/Header";
 import {Switch, Route, HashRouter} from 'react-router-dom';
 import LoadingElem from "./components/LoadingElem/LoadingElem";
 import {ToastContainer} from "react-toastify";
-import {useDispatch, useSelector} from "react-redux";
-import {selectAuth, setUsername} from "./features/auth/authSlice";
+import {useDispatch} from "react-redux";
+import {setUsername} from "./features/auth/authSlice";
+import axios from 'axios'
 
 const CatalogProductsPage = lazy(() => import( './pages/CatalogProductsPage/CatalogProductsPage' ));
 
@@ -18,10 +19,26 @@ function App() {
         }
     },[]);
 
+    const logOutFunc = () => {
+        dispatch(setUsername(null));
+        document.cookie = 'username=; expires=' + new Date().toUTCString();
+        document.cookie = 'token=; expires=' + new Date().toUTCString();
+        window.location.href = "/";
+    };
+
+    axios.interceptors.response.use(function (response) {
+        return response;
+    }, function (error) {
+        if(error.status === 401){
+            logOutFunc();
+        }
+        return Promise.reject(error);
+    });
+
     return (
         <div className="App">
             <HashRouter>
-                <Header/>
+                <Header logOutFunc={logOutFunc}/>
                 <ToastContainer />
                 <div className="mainContainer">
                     <Suspense fallback={<LoadingElem/>}>

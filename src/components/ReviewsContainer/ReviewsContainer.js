@@ -3,6 +3,7 @@ import styles from './reviewsContainerStyles.module.sass'
 import Review from "../Review/Review";
 import LoadingElem from "../LoadingElem/LoadingElem";
 import {getReviewsByProductId} from "../../api";
+import ReviewForm from "../ReviewForm/ReviewForm";
 
 function ReviewsContainer(props) {
 
@@ -19,7 +20,8 @@ function ReviewsContainer(props) {
     return (
         <div className={styles.reviewsContainer}>
             <span>Отзывы:</span>
-
+            {/*Форма отзыва или предложение войти/зарегистрироваться*/}
+            <ReviewForm/>
             {
                 loading ? <LoadingElem/>
                 : reviews.length !== 0 ?
@@ -29,7 +31,6 @@ function ReviewsContainer(props) {
                     :
                     <span>Ваш отзыв может быть первым</span>
             }
-            {/*тут будет форма для отправки отзыва*/}
         </div>
     );
 }
