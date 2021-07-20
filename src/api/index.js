@@ -1,6 +1,4 @@
 import axios from 'axios'
-import {setUsername} from "../features/auth/authSlice";
-
 
 const config = {
     baseURL: "http://smktesting.herokuapp.com/",

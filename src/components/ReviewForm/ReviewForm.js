@@ -3,13 +3,14 @@ import styles from './reviewFormStyles.module.sass'
 import {ErrorMessage, Field, Form, Formik} from "formik";
 import Rating from "@material-ui/lab/Rating";
 import {createReview} from "../../api";
+import PropTypes from "prop-types";
 
 function ReviewForm(props) {
 
     return (
         <div>
             <Formik
-                initialValues={{ rate: 0, text: ''}}
+                initialValues={{rate: 0, text: ''}}
                 validate={values => {
                     const errors = {};
                     if (!values.text || /^ +$/.test(values.username)) {
@@ -17,12 +18,14 @@ function ReviewForm(props) {
                     }
                     return errors;
                 }}
-                onSubmit={(values, {setSubmitting}) => {
+                onSubmit={(values, {setSubmitting, resetForm}) => {
                     setSubmitting(true);
-                        createReview(`/api/reviews/${props.productId}`, values).then((response)=>{
-                            console.log(response.data);
-                        });
-                    setSubmitting(false);
+                    createReview(`/api/reviews/${props.productId}`, values).then((response) => {
+                        resetForm({rate: 0, text: ''});
+                        props.setNewReview(response.data);
+                        setSubmitting(false);
+                    });
+
                 }}
             >
                 {({setFieldValue, values, isSubmitting}) => (
@@ -36,7 +39,7 @@ function ReviewForm(props) {
                                     const newValue = parseInt(event.target.value);
                                     if (values.rate !== newValue) {
                                         setFieldValue("rate", newValue);
-                                    }else {
+                                    } else {
                                         setFieldValue("rate", 0);
                                     }
                                 }}
@@ -53,5 +56,9 @@ function ReviewForm(props) {
         </div>
     );
 }
+
+ReviewForm.propTypes = {
+    setNewReview: PropTypes.func
+};
 
 export default ReviewForm;

@@ -8,22 +8,23 @@ import {
     selectSignInUpForm
 } from "../../features/signInUpForm/signInUpFormSlice";
 import {authentication} from "../../api";
-import { toast } from 'react-toastify';
+import {toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {axiosInstance} from '../../api/index'
 import {setUsername} from "../../features/auth/authSlice";
-
+import { mdiClose } from '@mdi/js';
+import Icon from "@mdi/react";
 
 function SignInUpForm(props) {
 
     const signInUpForm = useSelector(selectSignInUpForm);
     const dispatch = useDispatch();
     const notify = (response) => {
-        if(response.token){
-            toast.success('Вход выполнен успешно',{
+        if (response.token) {
+            toast.success('Вход выполнен успешно', {
                 position: toast.POSITION.BOTTOM_RIGHT
             })
-        }else{
+        } else {
             toast.warn(response.message, {
                 position: toast.POSITION.BOTTOM_RIGHT
             });
@@ -35,7 +36,8 @@ function SignInUpForm(props) {
             <div className={styles.clickableFreeArea} onClick={() => {
                 dispatch(changeSignInUpFormIsOpen())
             }}/>
-            <Formik
+
+           <Formik
                 initialValues={{username: '', password: '', confirmPassword: ''}}
                 validate={values => {
                     const errors = {};
@@ -60,7 +62,7 @@ function SignInUpForm(props) {
                     }
                     return errors;
                 }}
-                onSubmit={(values, {setSubmitting} ) => {
+                onSubmit={(values, {setSubmitting}) => {
                     setSubmitting(true);
                     let url = 'api/login/';
                     if (!signInUpForm.isSignIn) {
@@ -68,11 +70,11 @@ function SignInUpForm(props) {
                     }
                     authentication(url, values).then(response => {
                         notify(response.data);
-                        if(response.data.success === true){
+                        if (response.data.success === true) {
                             dispatch(setUsername(values.username));
                             document.cookie = `token=${response.data.token}`;
                             document.cookie = `username=${values.username}`;
-                            axiosInstance.defaults.headers.common['Authorization'] = 'Token '+ response.data.token;
+                            axiosInstance.defaults.headers.common['Authorization'] = 'Token ' + response.data.token;
                             dispatch(changeSignInUpFormIsOpen());
                         }
                         setSubmitting(false);
@@ -81,6 +83,9 @@ function SignInUpForm(props) {
             >
                 {({isSubmitting}) => (
                     <Form className={styles.signInUpForm}>
+                        <Icon className={styles.closeIcon} path={mdiClose} size={1} onClick={() => {
+                            dispatch(changeSignInUpFormIsOpen())
+                        }}/>
                         <div className={styles.formNav}>
                             <input id="signIn" type="radio" name="isSignInForm" checked={signInUpForm.isSignIn}
                                    onChange={() => {
@@ -94,7 +99,7 @@ function SignInUpForm(props) {
                                    }}/>
                             <label htmlFor="signUp">Регистрация</label>
                         </div>
-                        <Field type="text" name="username" placeholder="Имя пользователя" />
+                        <Field type="text" name="username" placeholder="Имя пользователя"/>
                         <ErrorMessage name="username">{msg => <div
                             className={styles.errorContainer}>{msg}</div>}</ErrorMessage>
                         <Field type="password" name="password" placeholder="Пароль"/>

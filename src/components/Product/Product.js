@@ -27,7 +27,7 @@ function Product(props) {
                     margin: '0'
                 },
                 mainProductInfoContainer: {
-                    margin: '20px'
+                    margin: '20px 20px 10px'
                 },
                 imageWrapper: {
                     minWidth: '250px',

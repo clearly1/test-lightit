@@ -11,24 +11,26 @@ import {selectAuth} from "../../features/auth/authSlice";
 
 function ReviewsContainer(props) {
 
+    const [newReview, setNewReview] = useState(null);
     const [reviews, setReviews] = useState([]);
     const [loading, setLoading] = useState(true);
     const dispatch = useDispatch();
     const auth = useSelector(selectAuth);
 
     useEffect(()=>{
+        console.log('useEffect');
         getReviewsByProductId(`/api/reviews/${props.productId}`).then(response =>{
             setReviews([...response.data]);
             setLoading(false);
         });
-    },[]);
+    },[newReview]);
 
     return (
         <div className={styles.reviewsContainer}>
             <span>Отзывы:</span>
             {
                 auth.username !== null ?
-                    <ReviewForm productId={props.productId}/>
+                    <ReviewForm productId={props.productId} setNewReview={setNewReview}/>
                     :
                 <div className={styles.authRecommendation}>Чтобы оставлять отзывы <span onClick={()=>{
                     dispatch(changeIsSignIn(true));
