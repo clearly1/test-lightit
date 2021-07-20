@@ -42,13 +42,15 @@ function Product(props) {
 
     return (
         <div className={styles.productContainer} onClick={() => {
-            if (props.openedProductId === props.product.id) {
-                props.openProductFunc(null)
-            } else {
+            if (props.openedProductId !== props.product.id) {
                 props.openProductFunc(props.product.id)
             }
         }} style={openStyle.productContainer}>
-            <div className={styles.flexColumn} style={openStyle.flexColumn}>
+            <div className={styles.flexColumn} style={openStyle.flexColumn} onClick={()=>{
+                if (props.openedProductId === props.product.id){
+                    props.openProductFunc(null)
+                }
+            }}>
                 <div className={styles.imageWrapper} style={openStyle.imageWrapper}>
                     <img src={"https://smktesting.herokuapp.com/static/" + props.product.img} alt="No image"/>
                 </div>
@@ -68,15 +70,24 @@ function Product(props) {
                                   color="rgba(128, 128, 128, 0.9)"
                             />
                         </div>
+
+                    }
+                    {
+                        props.openedProductId === props.product.id &&
+                        <div className={styles.lessInfoBlock}>
+                            <Icon className={styles.mdiChevronDown} path={mdiChevronDown}
+                                  size={1} rotate={180}
+                                  color="rgba(128, 128, 128, 0.9)"
+                            />
+                            <span>Show less</span>
+                        </div>
                     }
                 </div>
-
             </div>
             {
                 props.openedProductId === props.product.id &&
                 <ReviewsContainer productId={props.product.id}/>
             }
-
         </div>
     );
 }

@@ -8,7 +8,7 @@ import PropTypes from "prop-types";
 function Review(props) {
 
     const [dateReview] = useState(() => {
-        return moment(props.review.created_at).utc().format('DD/MM/YYYY HH:mm')
+        return moment(props.review.created_at).utc(true).format('DD/MM/YYYY HH:mm')
     });
 
     return (

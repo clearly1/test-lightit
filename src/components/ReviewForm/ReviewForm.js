@@ -1,44 +1,48 @@
 import React from 'react';
 import styles from './reviewFormStyles.module.sass'
-import {authentication, axiosInstance} from "../../api";
-import {setUsername} from "../../features/auth/authSlice";
-import {changeIsSignIn, changeSignInUpFormIsOpen} from "../../features/signInUpForm/signInUpFormSlice";
 import {ErrorMessage, Field, Form, Formik} from "formik";
 import Rating from "@material-ui/lab/Rating";
+import {createReview} from "../../api";
 
 function ReviewForm(props) {
 
     return (
         <div>
             <Formik
-                initialValues={{rating: 3, text: ''}}
+                initialValues={{ rate: 0, text: ''}}
                 validate={values => {
-                    console.log(values);
                     const errors = {};
-                    if (!values.text) {
+                    if (!values.text || /^ +$/.test(values.username)) {
                         errors.text = 'Отзыв не может быть пустым';
                     }
                     return errors;
                 }}
                 onSubmit={(values, {setSubmitting}) => {
                     setSubmitting(true);
-
-
+                        createReview(`/api/reviews/${props.productId}`, values).then((response)=>{
+                            console.log(response.data);
+                        });
                     setSubmitting(false);
                 }}
             >
-                {({values, isSubmitting}) => (
+                {({setFieldValue, values, isSubmitting}) => (
                     <Form className={styles.formContainer}>
                         <div className={styles.flexColumn}>
                             <Rating
-                                name="simple-controlled"
+                                name="rating"
                                 size="small"
-                                value={values.rating}
-                                onChange={(event, newValue) => {
-                                    values.rating = newValue;
+                                value={values.rate}
+                                onChange={(event) => {
+                                    const newValue = parseInt(event.target.value);
+                                    if (values.rate !== newValue) {
+                                        setFieldValue("rate", newValue);
+                                    }else {
+                                        setFieldValue("rate", 0);
+                                    }
                                 }}
                             />
-                            <Field as="textarea" name="text" placeholder="Ваш отзыв" maxLength={200} className={styles.textField}/>
+                            <Field as="textarea" name="text" placeholder="Ваш отзыв" maxLength={200}
+                                   className={styles.textField}/>
                             <ErrorMessage name="text">{msg => <div
                                 className={styles.errorContainer}>{msg}</div>}</ErrorMessage>
                         </div>

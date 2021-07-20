@@ -1,16 +1,23 @@
 import React from 'react';
 import styles from './headerStyles.module.sass'
 import SignBtn from "../SignBtn/SignBtn";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {selectSignInUpForm} from "../../features/signInUpForm/signInUpFormSlice";
 import SignInUpForm from "../SignInUpForm/SignInUpForm";
-import {selectAuth} from "../../features/auth/authSlice";
-import PropTypes from "prop-types";
+import {selectAuth, setUsername} from "../../features/auth/authSlice";
 
 function Header(props) {
 
     const signInUpForm = useSelector(selectSignInUpForm);
     const auth = useSelector(selectAuth);
+    const dispatch = useDispatch();
+
+    const logOutFunc = () => {
+        dispatch(setUsername(null));
+        document.cookie = 'username=; expires=' + new Date().toUTCString();
+        document.cookie = 'token=; expires=' + new Date().toUTCString();
+        window.location.href = "/";
+    };
 
     return (
         <header className={styles.headerContainer}>
@@ -20,7 +27,7 @@ function Header(props) {
                     auth.username ?
                         <>
                             <span className={styles.authenticated}>{auth.username}</span>
-                            <span className={styles.authenticated} onClick={props.logOutFunc}>Выйти</span>
+                            <span className={styles.authenticated} onClick={logOutFunc}>Выйти</span>
                         </>
                         :
                         <>
@@ -40,9 +47,5 @@ function Header(props) {
         </header>
     );
 }
-
-Header.propTypes = {
-    logOutFunc: PropTypes.func
-};
 
 export default Header;

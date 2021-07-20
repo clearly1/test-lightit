@@ -8,7 +8,6 @@
   background-color: white
   border-radius: 5px
   height: 300px
-  cursor: pointer
   transition: 0.3s
   overflow: hidden
   align-items: center
@@ -27,7 +26,7 @@
   padding-bottom: 150px
   position: relative
   overflow: hidden
-  margin: 0 auto
+  margin: 0 auto auto
   transition: 0.3s
   img
     position: absolute
@@ -78,21 +77,32 @@
   transition: 0.3s
   background: linear-gradient(to top, white 45%, rgba(0,0,0,0))
 
-
 .mdiChevronDown
   opacity: 0
   transition: 0.3s
   margin-top: -5px
 
-.productContainer:hover
-  .moreInfoBlock
+.flexColumn:hover
+  .moreInfoBlock, .lessInfoBlock
     transition: 0.3s
     color: rgba(128, 128, 128, 0.9)
     transform: translateY(-10px)
     .mdiChevronDown
       opacity: 1
 
+.lessInfoBlock
+  width: 100%
+  color: rgba(128, 128, 128, 0.4)
+  display: flex
+  flex-direction: column
+  align-items: center
+  margin-top: auto
+  transition: 0.3s
+  font-weight: bold
+
+
 .flexColumn
   display: flex
   flex-direction: column
   width: 100%
+  cursor: pointer

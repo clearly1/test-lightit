@@ -41,8 +41,8 @@ function SignInUpForm(props) {
                     const errors = {};
                     if (!values.username) {
                         errors.username = 'Имя пользователя это обязательное поле';
-                    } else if (!/^(?=.{8,20}$)[a-zA-Z0-9]+$/.test(values.username)) {
-                        errors.username = 'Имя пользователя должно содержать только буквы и цифры от 8 до 20 символов';
+                    } else if (!/^(?=.{8,30}$)[a-zA-Z0-9]+$/.test(values.username)) {
+                        errors.username = 'Имя пользователя должно содержать только буквы и цифры от 8 до 30 символов';
                     }
                     if (!values.password) {
                         errors.password = 'Пароль это обязательное поле';
@@ -72,7 +72,7 @@ function SignInUpForm(props) {
                             dispatch(setUsername(values.username));
                             document.cookie = `token=${response.data.token}`;
                             document.cookie = `username=${values.username}`;
-                            axiosInstance.defaults.headers.common['Authorization'] = 'Token'+ response.data.token;
+                            axiosInstance.defaults.headers.common['Authorization'] = 'Token '+ response.data.token;
                             dispatch(changeSignInUpFormIsOpen());
                         }
                         setSubmitting(false);
